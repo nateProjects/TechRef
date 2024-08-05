@@ -96,6 +96,12 @@ Monitor the queries being run by MySQL
 
 ``watch -n 1 mysqladmin --user=<user> --password=<password> processlist``
 
+Check DB size
+
+```
+SELECT table_schema "Data Base Name", sum( data_length + index_length ) / 1024 / 1024 "Data Base Size in MB" FROM information_schema.TABLES GROUP BY table_schema ;
+```
+
 ## Clean Up Linux
 
 ### Ubuntu
@@ -116,8 +122,4 @@ snap list --all | awk '/disabled/{print $1, $3}' |
     done
 ```
 
-Check DB size
 
-```
-SELECT table_schema "Data Base Name", sum( data_length + index_length ) / 1024 / 1024 "Data Base Size in MB" FROM information_schema.TABLES GROUP BY table_schema ;
-```
