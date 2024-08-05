@@ -96,6 +96,26 @@ Monitor the queries being run by MySQL
 
 ``watch -n 1 mysqladmin --user=<user> --password=<password> processlist``
 
+## Clean Up Linux
+
+### Ubuntu
+
+```
+#!/bin/bash
+# sudo apt-get purge $(dpkg -l linux-{image,headers}-"[0-9]*" | awk '/ii/{print $2}' | grep -ve "$(uname -r | sed -r 's/-[a-z]+//')")
+apt-get clean
+apt-get autoremove --purge
+apt-get autoremove
+journalctl --vacuum-time=3d
+# Removes old revisions of snaps
+# CLOSE ALL SNAPS BEFORE RUNNING THIS
+set -eu
+snap list --all | awk '/disabled/{print $1, $3}' |
+    while read snapname revision; do
+        snap remove "$snapname" --revision="$revision"
+    done
+```
+
 Check DB size
 
 ```
